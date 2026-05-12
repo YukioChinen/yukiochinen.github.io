@@ -4,15 +4,15 @@ Este projeto já está configurado para exportação estática com Next.js, ent�
 
 ### Como publicar
 
-1. Crie um repositório no GitHub com o mesmo nome usado no `basePath`: `portfolio-enzoyukiochinen`.
-2. Faça o push do projeto para a branch `main`.
-3. No repositório, abra Settings > Pages e selecione GitHub Actions como fonte.
-4. A cada push na `main`, o workflow em [.github/workflows/deploy.yml](.github/workflows/deploy.yml) gera a pasta `out` e publica automaticamente.
+1. No repositório `yukiochinen.github.io`, vá em Settings > Pages.
+2. Em Build and deployment, selecione GitHub Actions como fonte.
+3. Faça o push do projeto para a branch `main`.
+4. A cada push na `main`, o workflow em [.github/workflows/deploy.yml](.github/workflows/deploy.yml) gera a pasta `out` e publica automaticamente na raiz do domínio.
 
 ### Observações
 
-- Se o nome do repositório mudar, atualize o `basePath` em [next.config.ts](next.config.ts).
-- O avatar em [app/page.tsx](app/page.tsx) usa o `basePath` para funcionar corretamente dentro do GitHub Pages.
+- Como esse é um usuário/site de organização do tipo `*.github.io`, o site deve ser servido na raiz, então não use `basePath`.
+- O avatar em [app/page.tsx](app/page.tsx) usa caminho absoluto na raiz.
 
 ### Desenvolvimento
 

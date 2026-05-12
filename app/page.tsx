@@ -87,7 +87,6 @@ export default function Home() {
     getPreferredTheme,
     () => false,
   );
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
   const introText = "Oi! Eu sou o ";
   const nameText = "Enzo";
   const [typedIntro, setTypedIntro] = useState("");
@@ -260,7 +259,7 @@ export default function Home() {
 
               <div className="flex-shrink-0 mb-4 md:mb-0 md:ml-6">
                 <img
-                  src={`${basePath}/profile.jpg`}
+                  src="/profile.jpg"
                   alt="Enzo"
                   className="h-90 w-70 object-cover border border-border rounded-md transform -translate-y-6 md:-translate-y-8 md:self-start"
                 />
