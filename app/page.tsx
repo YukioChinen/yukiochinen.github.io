@@ -257,11 +257,11 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="flex-shrink-0 mb-4 md:mb-0 md:ml-6">
+              <div className="mt-6 flex-shrink-0 md:mt-0 md:mb-0 md:ml-6">
                 <img
                   src="/profile.jpg"
                   alt="Enzo"
-                  className="h-90 w-70 object-cover border border-border rounded-md transform -translate-y-6 md:-translate-y-8 md:self-start"
+                  className="h-90 w-70 object-cover border border-border rounded-md transform md:-translate-y-8 md:self-start"
                 />
               </div>
             </div>
