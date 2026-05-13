@@ -88,7 +88,7 @@ export default function Home() {
     () => false,
   );
   const introText = "Oi! Eu sou o ";
-  const nameText = "Enzo";
+  const nameText = "Enzo!";
   const [typedIntro, setTypedIntro] = useState("");
   const [typedName, setTypedName] = useState("");
 
@@ -208,10 +208,10 @@ export default function Home() {
           </h2>
 
           <div className="space-y-10">
-            <div className="flex flex-col md:flex-row md:items-start md:gap-8">
-              <div className="flex-1 space-y-8">
+            <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_auto] md:items-start">
+              <div className="space-y-8 md:row-start-1 md:col-start-1">
                 <p className="text-lg leading-relaxed text-muted-foreground">
-                  Sou formado em{" "}
+                  Formado em{" "}
                   <span className="text-yellow-500 text-foreground font-semibold">
                     Engenharia de Computação na UNIFEI.
                   </span>{" "}
@@ -223,46 +223,54 @@ export default function Home() {
                 </p>
                 <p className="text-lg leading-relaxed text-muted-foreground">
                   Sou de Guarulhos, descendente de{" "}
+                  <img
+                    src="/okinawa.svg"
+                    alt="Bandeira de Okinawa"
+                    className="mx-1 inline-block h-[1em] w-auto align-text-bottom"
+                  />
                   <span className="text-yellow-500 text-foreground font-semibold">
                     Okinawa, Japão.
                   </span>
+                  
                 </p>
                 <p className="text-lg leading-relaxed text-muted-foreground">
-                  Apaixonado por tecnologia e estou sempre buscando aprender
-                  novas habilidades e enfrentar desafios.
+                  Apaixonado por tecnologia e estou sempre buscando <span className="text-yellow-500 text-foreground font-semibold">aprender</span>{" "}
+                  novas 
+                  habilidades e enfrentar <span className="text-yellow-500 text-foreground font-semibold">desafios</span>.
                 </p>
                 <p className="text-lg leading-relaxed text-muted-foreground">
                   Atualmente, aprofundando meus conhecimentos e em busca de novas oportunidades no mercado
                   de trabalho.
                 </p>
-                <div className="flex gap-3 pt-4">
-                  <a
-                    href="https://www.linkedin.com/in/enzo-yukio-chinen/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center h-10 w-10 rounded-full border border-border bg-background hover:bg-accent transition"
-                    aria-label="LinkedIn"
-                  >
-                    <FaLinkedin className="h-5 w-5 text-foreground" />
-                  </a>
-                  <a
-                    href="https://github.com/YukioChinen"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center h-10 w-10 rounded-full border border-border bg-background hover:bg-accent transition"
-                    aria-label="GitHub"
-                  >
-                    <FaGithub className="h-5 w-5 text-foreground" />
-                  </a>
-                </div>
               </div>
 
-              <div className="mt-6 flex-shrink-0 md:mt-0 md:mb-0 md:ml-6">
+              <div className="md:row-start-1 md:col-start-2 md:ml-6 md:flex-shrink-0">
                 <img
                   src="/profile.jpg"
                   alt="Enzo"
-                  className="h-90 w-70 object-cover border border-border rounded-md transform md:-translate-y-8 md:self-start"
+                  className="h-90 w-70 rounded-md border border-border object-cover md:-translate-y-8 md:self-start"
                 />
+              </div>
+
+              <div className="flex gap-3 md:row-start-2 md:col-start-1 md:pt-0">
+                <a
+                  href="https://www.linkedin.com/in/enzo-yukio-chinen/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background transition hover:bg-accent"
+                  aria-label="LinkedIn"
+                >
+                  <FaLinkedin className="h-5 w-5 text-foreground" />
+                </a>
+                <a
+                  href="https://github.com/YukioChinen"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background transition hover:bg-accent"
+                  aria-label="GitHub"
+                >
+                  <FaGithub className="h-5 w-5 text-foreground" />
+                </a>
               </div>
             </div>
           </div>
@@ -297,7 +305,7 @@ export default function Home() {
                       className="text-muted-foreground flex items-start gap-3"
                     >
                       <span
-                        className="mt-1 h-1.5 w-1.5 rounded-full flex-shrink-0"
+                        className="mt-[0.45rem] h-1.5 w-1.5 flex-shrink-0 rounded-full"
                         style={{ background: "var(--gradient-hero)" }}
                       />
                       <span className="text-sm">{topico}</span>
