@@ -5,6 +5,14 @@ import { FaLinkedin, FaGithub, FaMoon, FaSun } from "react-icons/fa";
 
 const experiencias = [
   {
+    periodo: "Julho 2026 — Atualmente",
+    cargo: "Desenvolvedor Full Stack Junior",
+    empresa: "Teck SOluções — São Paulo, SP",
+    topicos: [
+      "Desenvolvendo soluções usando JavaScript com foco em implementar funcionalidades e melhorias em sistemas web, garantindo a entrega de produtos de alta qualidade.",
+    ],
+  },
+  {
     periodo: "Julho 2025 — Novembro 2025",
     cargo: "Short Job Automation",
     empresa: "BTG Pactual S.A. — São Paulo, SP",
