@@ -10,6 +10,7 @@ const experiencias = [
     empresa: "Teck SOluções — São Paulo, SP",
     topicos: [
       "Desenvolvendo soluções usando JavaScript com foco em implementar funcionalidades e melhorias em sistemas web, garantindo a entrega de produtos de alta qualidade.",
+      "Atuando na manutenção e evolução de sistemas existentes, identificando e corrigindo bugs, além de otimizar o desempenho e a experiência do usuário.",
     ],
   },
   {
