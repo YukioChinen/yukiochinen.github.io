@@ -248,8 +248,7 @@ export default function Home() {
                   habilidades e enfrentar <span className="text-yellow-500 text-foreground font-semibold">desafios</span>.
                 </p>
                 <p className="text-lg leading-relaxed text-muted-foreground">
-                  Atualmente, aprofundando meus conhecimentos e em busca de novas oportunidades no mercado
-                  de trabalho.
+                  Atualmente como desenvolvedor Full Stack Junior na <span className="text-yellow-500 text-foreground font-semibold">Teck Soluções</span>.
                 </p>
               </div>
 
