@@ -231,16 +231,11 @@ export default function Home() {
                   e em automação de processos.
                 </p>
                 <p className="text-lg leading-relaxed text-muted-foreground">
-                  Sou de Guarulhos, descendente de{" "}
-                  <img
-                    src="/okinawa.svg"
-                    alt="Bandeira de Okinawa"
-                    className="mx-1 inline-block h-[1em] w-auto align-text-bottom"
-                  />
+                  Nascido em São Paulo, cresci em Guarulhos. Descendente de
                   <span className="text-yellow-500 text-foreground font-semibold">
-                    Okinawa, Japão.
+                    Okinawa, Japão
                   </span>
-                  
+                  .
                 </p>
                 <p className="text-lg leading-relaxed text-muted-foreground">
                   Apaixonado por tecnologia e estou sempre buscando <span className="text-yellow-500 text-foreground font-semibold">aprender</span>{" "}
