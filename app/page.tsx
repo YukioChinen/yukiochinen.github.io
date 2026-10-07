@@ -231,7 +231,7 @@ export default function Home() {
                   e em automação de processos.
                 </p>
                 <p className="text-lg leading-relaxed text-muted-foreground">
-                  Nascido em São Paulo, cresci em Guarulhos. Descendente de
+                  Nascido em São Paulo, cresci em Guarulhos. Descendente de{" "}
                   <span className="text-yellow-500 text-foreground font-semibold">
                     Okinawa, Japão
                   </span>
