@@ -1,11 +1,31 @@
 "use client";
 
 import { useEffect, useState, useSyncExternalStore } from "react";
-import { FaLinkedin, FaGithub, FaMoon, FaSun } from "react-icons/fa";
+import {
+  FaLinkedin,
+  FaGithub,
+  FaMoon,
+  FaSun,
+  FaArrowDown,
+  FaArrowRight,
+} from "react-icons/fa";
+
+const secoes = [
+  { id: "sobre", label: "Sobre" },
+  { id: "experiencias", label: "Experiências" },
+  { id: "contato", label: "Contato" },
+];
+
+const fatos = [
+  { k: "Formação", v: "Eng. de Computação, UNIFEI" },
+  { k: "Atuação", v: "Full Stack & automação" },
+  { k: "Base", v: "Guarulhos, SP" },
+];
 
 const experiencias = [
   {
     periodo: "Julho 2026 — Atualmente",
+    tags: ["JavaScript", "Web", "Full Stack"],
     cargo: "Desenvolvedor Full Stack Junior",
     empresa: "Teck Soluções — São Paulo, SP",
     topicos: [
@@ -15,6 +35,7 @@ const experiencias = [
   },
   {
     periodo: "Julho 2025 — Novembro 2025",
+    tags: ["Python", "Playwright", "AWS", "Azure", "PostgreSQL"],
     cargo: "Short Job Automation",
     empresa: "BTG Pactual S.A. — São Paulo, SP",
     topicos: [
@@ -25,6 +46,7 @@ const experiencias = [
   },
   {
     periodo: "Março 2024 — Fevereiro 2025",
+    tags: ["Python", "IoT", "ESP32", "LoRa"],
     cargo: "Pesquisador",
     empresa: "PETTEC (UNIFEI) — Itajubá, MG",
     topicos: [
@@ -34,6 +56,7 @@ const experiencias = [
   },
   {
     periodo: "Julho 2022 — Janeiro 2024",
+    tags: ["Figma", "UX/UI", "Agile"],
     cargo: "Assessor da Diretoria de Vice-Presidência",
     empresa: "byron.solutions (Empresa Júnior) — Itajubá, MG",
     topicos: [
@@ -90,6 +113,14 @@ function setTheme(nextDark: boolean) {
   themeListeners.forEach((listener) => listener());
 }
 
+function Hl( { children }: { children: React.ReactNode }) {
+  return (
+  <mark className="rounded bg-[var(--brand-soft)] px-1.5 py-0.5 font-semibold text-foreground">
+    {children}
+  </mark>
+);
+}
+
 export default function Home() {
   const dark = useSyncExternalStore(
     subscribeTheme,
@@ -100,6 +131,22 @@ export default function Home() {
   const nameText = "Enzo!";
   const [typedIntro, setTypedIntro] = useState("");
   const [typedName, setTypedName] = useState("");
+  const [active, setActive] = useState("");
+  const [visao, setVisao] = useState<"cards" | "timeline">("cards");
+  const [aberto, setAberto] = useState(0);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((e) => e.isIntersecting && setActive(e.target.id)),
+      { rootMargin: "-45% 0px -50% 0px" },
+    );
+    secoes.forEach(({ id }) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
@@ -140,184 +187,332 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <div className="fixed right-6 top-6 z-50">
-        <button
-          type="button"
-          onClick={() => setTheme(!dark)}
-          aria-label="Alternar modo escuro"
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background/80 text-foreground shadow-sm backdrop-blur-md transition hover:bg-accent"
-        >
-          {dark ? (
-            <FaSun className="h-4 w-4" />
-          ) : (
-            <FaMoon className="h-4 w-4" />
-          )}
-        </button>
-      </div>
-
-      <section className="relative flex min-h-screen items-center overflow-hidden px-6 pt-6">
-        <div
-          className="absolute -right-32 -top-32 h-96 w-96 rounded-full opacity-30 blur-3xl"
-          style={{ background: "var(--gradient-hero)" }}
-        />
-        <div className="mx-auto w-full max-w-6xl">
-          <p className="mb-4 text-sm uppercase tracking-[0.3em] text-muted-foreground">
-            Portfólio
-          </p>
-
-          <h1 className="text-5xl font-bold leading-tight tracking-tight md:text-7xl">
-            <span>{typedIntro}</span>
-            <span
-              className="bg-clip-text text-transparent"
-              style={{ backgroundImage: "var(--gradient-hero)" }}
-            >
-              {typedName}
-            </span>
-            <span className="ml-1 inline-block h-[0.9em] w-[2px] translate-y-[0.0em] bg-foreground align-middle animate-caret-blink" />
-          </h1>
-
-          <p className="mt-6 max-w-3xl text-lg text-muted-foreground italic border-l-4 border-yellow-500 pl-4">
-            "Sometimes it is the people who no one imagines anything of who do
-            the things that no one can imagine."
-            <span className="block text-sm mt-2 not-italic text-muted-foreground/80">
-              — Alan Turing
-            </span>
-          </p>
-
-          <div className="mt-10 flex gap-4">
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
+        <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6">
+          <a href="#" className="text-sm font-bold tracking-tight">
+            enzo<span className="text-[var(--brand)]">.</span>dev
+          </a>
+          <nav aria-label="Principal" className="flex items-center gap-6">
+            <ul className="hidden items-center gap-6 text-sm sm:flex">
+              {secoes.map((s) => (
+                <li key={s.id}>
+                  <a
+                    href={`#${s.id}`}
+                    data-active={active === s.id}
+                    className="link-draw py-1 text-muted-foreground transition-colors hover:text-foreground data-[active=true]:text-foreground"
+                  >
+                    {s.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
             <button
-              onClick={() => {
-                const element = document.getElementById("sobre");
-                element?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="rounded-full bg-foreground px-6 py-3 text-sm font-medium text-background transition hover:opacity-90"
+              type="button"
+              onClick={() => setTheme(!dark)}
+              aria-label="Alternar modo escuro"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-border transition hover:bg-accent"
             >
-              Conhecer mais
+              {dark ? <FaSun className="h-4 w-4" /> : <FaMoon className="h-4 w-4" />}
             </button>
-            <button
-              onClick={() => {
-                const element = document.getElementById("experiencias");
-                element?.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="rounded-full border border-border px-6 py-3 text-sm font-medium transition hover:bg-accent"
-            >
-              Ver experiências
-            </button>
-          </div>
+          </nav>
         </div>
-      </section>
+      </header>
 
-      <section id="sobre" className="px-6 py-24">
-        <div className="mx-auto w-full max-w-7xl">
-          <p className="mb-3 text-sm uppercase tracking-[0.3em] text-muted-foreground">
-            01
-          </p>
-          <h2 className="mb-8 text-4xl font-bold tracking-tight md:text-5xl">
-            Sobre mim
-          </h2>
+      <section className="relative flex min-h-screen items-center overflow-hidden px-6 pb-16 pt-28">
+        <div className="grid-bg pointer-events-none absolute inset-0" aria-hidden />
+        <div className="relative mx-auto grid w-full max-w-6xl items-center gap-12 md:grid-cols-[1.25fr_1fr]">
+          <div className="enter">
+            <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs text-muted-foreground">
+              <span className="h-2 w-2 rounded-full bg-emerald-500" />
+              Dev Full Stack Junior · Teck Soluções
+            </p>
 
-          <div className="space-y-10">
-            <div className="grid gap-8 md:grid-cols-[minmax(0,1fr)_auto] md:items-start">
-              <div className="space-y-8 md:row-start-1 md:col-start-1">
-                <p className="text-lg leading-relaxed text-muted-foreground">
-                  Formado em{" "}
-                  <span className="text-yellow-500 text-foreground font-semibold">
-                    Engenharia de Computação na UNIFEI.
-                  </span>{" "}
-                  Tenho experiência como{" "}
-                  <span className="text-yellow-500 text-foreground font-semibold">
-                    Desenvolvedor Full Stack
-                  </span>{" "}
-                  e em automação de processos.
-                </p>
-                <p className="text-lg leading-relaxed text-muted-foreground">
-                  Nascido em São Paulo, cresci em Guarulhos. Descendente de{" "}
-                  <span className="text-yellow-500 text-foreground font-semibold">
-                    Okinawa, Japão
-                  </span>
-                  .
-                </p>
-                <p className="text-lg leading-relaxed text-muted-foreground">
-                  Apaixonado por tecnologia e estou sempre buscando <span className="text-yellow-500 text-foreground font-semibold">aprender</span>{" "}
-                  novas 
-                  habilidades e enfrentar <span className="text-yellow-500 text-foreground font-semibold">desafios</span>.
-                </p>
-                <p className="text-lg leading-relaxed text-muted-foreground">
-                  Atualmente como desenvolvedor Full Stack Junior na <span className="text-yellow-500 text-foreground font-semibold">Teck Soluções</span>.
-                </p>
-              </div>
+            <h1 className="min-h-[2.4em] text-5xl font-bold leading-[1.1] tracking-tight md:text-7xl">
+              <span>{typedIntro}</span>
+              <span
+                className="bg-clip-text text-transparent"
+                style={{ backgroundImage: "var(--gradient-hero)" }}
+              >
+                {typedName}
+              </span>
+              <span className="ml-1 inline-block h-[0.85em] w-[3px] bg-[var(--brand)] align-middle animate-caret-blink" />
+            </h1>
 
-              <div className="md:row-start-1 md:col-start-2 md:ml-6 md:flex-shrink-0">
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
+              Engenheiro de Computação · Desenvolvedor Full Stack
+            </p>
+
+            <blockquote className="mt-8 max-w-xl border-l-2 border-[var(--brand)] pl-4 text-sm italic leading-relaxed text-muted-foreground">
+              “Sometimes it is the people who no one imagines anything of who
+              do the things that no one can imagine.”
+              <cite className="mt-2 block text-xs not-italic opacity-80">
+                — Alan Turing
+              </cite>
+            </blockquote>
+
+            <div className="mt-10 flex flex-wrap gap-3">
+              <a href="#experiencias" className="btn btn-solid">
+                Ver experiências <FaArrowDown className="h-3 w-3" />
+              </a>
+              <a href="#sobre" className="btn btn-ghost">
+                Conhecer mais
+              </a>
+            </div>
+          </div>
+
+          <div className="enter justify-self-center md:justify-self-end" style={{ animationDelay: "0.15s" }}>
+            <div className="photo-frame relative w-64 sm:w-72 md:w-80">
+              <div
+                className="absolute -inset-3 translate-x-3 translate-y-3 rounded-2xl"
+                style={{ background: "var(--gradient-hero)", opacity: 0.85 }}
+                aria-hidden
+              />
+              <div className="relative overflow-hidden rounded-2xl border border-border bg-card">
                 <img
                   src="/profile.jpg"
-                  alt="Enzo"
-                  className="h-90 w-70 rounded-md border border-border object-cover md:-translate-y-8 md:self-start"
+                  alt="Retrato de Enzo Yukio Chinen"
+                  className="aspect-[4/5] w-full object-cover"
                 />
-              </div>
-
-              <div className="flex gap-3 md:row-start-2 md:col-start-1 md:pt-0">
-                <a
-                  href="https://www.linkedin.com/in/enzo-yukio-chinen/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background transition hover:bg-accent"
-                  aria-label="LinkedIn"
-                >
-                  <FaLinkedin className="h-5 w-5 text-foreground" />
-                </a>
-                <a
-                  href="https://github.com/YukioChinen"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background transition hover:bg-accent"
-                  aria-label="GitHub"
-                >
-                  <FaGithub className="h-5 w-5 text-foreground" />
-                </a>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="experiencias" className="px-6 py-24">
-        <div className="mx-auto w-full max-w-7xl">
-          <p className="mb-3 text-sm uppercase tracking-[0.3em] text-muted-foreground">
-            02
-          </p>
-          <h2 className="mb-12 text-4xl font-bold tracking-tight md:text-5xl">
-            Minhas experiências
-          </h2>
+      <section className="border-y border-border bg-card/50 px-6 py-8">
+        <dl className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-6 sm:grid-cols-3">
+          {fatos.map((f) => (
+            <div key={f.k}>
+              <dt className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                {f.k}
+              </dt>
+              <dd className="mt-1 text-sm font-semibold">{f.v}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
 
-          <ol className="relative border-l border-border">
-            {experiencias.map((exp) => (
-              <li key={exp.periodo} className="mb-10 ml-6">
-                <span
-                  className="absolute -left-1.5 mt-2 h-3 w-3 rounded-full"
-                  style={{ background: "var(--gradient-hero)" }}
-                />
-                <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                  {exp.periodo}
-                </p>
-                <h3 className="mt-1 text-xl font-semibold">{exp.cargo}</h3>
-                <p className="text-sm text-muted-foreground">{exp.empresa}</p>
-                <ul className="mt-3 space-y-2">
-                  {exp.topicos.map((topico) => (
-                    <li
-                      key={topico}
-                      className="text-muted-foreground flex items-start gap-3"
-                    >
-                      <span
-                        className="mt-[0.45rem] h-1.5 w-1.5 flex-shrink-0 rounded-full"
-                        style={{ background: "var(--gradient-hero)" }}
-                      />
-                      <span className="text-sm">{topico}</span>
+      <section id="sobre" className="px-6 py-28">
+        <div className="mx-auto grid w-full max-w-6xl gap-12 md:grid-cols-[1fr_1.6fr]">
+          <div>
+            <p className="mb-3 text-sm text-[var(--brand-ink)]">01 / sobre</p>
+            <h2 className="text-4xl font-bold tracking-tight md:text-5xl">
+              Sobre mim
+            </h2>
+          </div>
+          <div className="space-y-6 text-lg leading-relaxed text-muted-foreground">
+            <p>
+              Formado em <Hl>Engenharia de Computação na UNIFEI</Hl>. Tenho
+              experiência como <Hl>Desenvolvedor Full Stack</Hl> e em automação
+              de processos.
+            </p>
+            <p>
+              Nascido em São Paulo, cresci em Guarulhos. Descendente de{" "}
+              <Hl>Okinawa, Japão</Hl>.
+            </p>
+            <p>
+              Apaixonado por tecnologia, estou sempre buscando <Hl>aprender</Hl>{" "}
+              novas habilidades e enfrentar <Hl>desafios</Hl>.
+            </p>
+            <p>
+              Atualmente atuo como desenvolvedor Full Stack Junior na{" "}
+              <Hl>Teck Soluções</Hl>.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="experiencias" className="bg-card/50 px-6 py-28">
+        <div className="mx-auto w-full max-w-6xl">
+          <p className="mb-3 text-sm text-[var(--brand-ink)]">02 / trajetória</p>
+          <div className="mb-14 flex flex-wrap items-end justify-between gap-6">
+            <h2 className="text-4xl font-bold tracking-tight md:text-5xl">
+              Minhas experiências
+            </h2>
+            <div role="tablist" aria-label="Modo de visualização" className="flex rounded-full border border-border bg-background p-1">
+              {([["cards", "Cards"], ["timeline", "Linha do tempo"]] as const).map(([id, label]) => (
+                <button
+                  key={id}
+                  role="tab"
+                  type="button"
+                  aria-selected={visao === id}
+                  onClick={() => setVisao(id)}
+                  className="min-h-10 rounded-full px-4 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground aria-selected:bg-[var(--brand)] aria-selected:text-[oklch(0.2_0.02_80)]"
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {visao === "timeline" ? (
+            <>
+            <div key="timeline-h" className="enter hidden lg:block">
+              <ol className="relative grid grid-cols-4 pt-2">
+                <span aria-hidden className="absolute left-0 right-0 top-[calc(3.25rem+0.5rem)] h-0.5 -translate-y-1/2 bg-border" />
+                {[...experiencias].map((exp, i) => ({ exp, i })).reverse().map(({ exp, i }) => {
+                  const open = aberto === i;
+                  return (
+                    <li key={exp.periodo} className="relative">
+                      <button
+                        type="button"
+                        aria-expanded={open}
+                        onClick={() => setAberto(i)}
+                        className="group block w-full pr-4 text-left"
+                      >
+                        <span className="block h-11 text-xs uppercase tracking-wider text-[var(--brand-ink)]">
+                          {exp.periodo.replace(" — ", " →\u00a0")}
+                        </span>
+                        <span
+                          aria-hidden
+                          className="relative z-10 block h-4 w-4 rounded-full border-2 border-background transition-transform group-hover:scale-125"
+                          style={{ background: open ? "var(--brand)" : "var(--muted-foreground)", transform: open ? "scale(1.3)" : undefined }}
+                        />
+                        <span className={`mt-5 block text-base font-semibold transition-colors ${open ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>
+                          {exp.cargo}
+                        </span>
+                        <span className="mt-1 block text-xs text-muted-foreground">{exp.empresa}</span>
+                      </button>
                     </li>
-                  ))}
-                </ul>
+                  );
+                })}
+              </ol>
+              {aberto >= 0 && (
+                <div key={aberto} className="enter card mt-10 p-8">
+                  <h3 className="text-xl font-semibold">{experiencias[aberto].cargo}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{experiencias[aberto].empresa}</p>
+                  <ul className="mt-4 space-y-2.5">
+                    {experiencias[aberto].topicos.map((topico) => (
+                      <li key={topico} className="flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
+                        <span className="mt-[0.5rem] h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: "var(--gradient-hero)" }} />
+                        <span>{topico.trim()}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <ul className="mt-5 flex flex-wrap gap-2" aria-label="Tecnologias">
+                    {experiencias[aberto].tags.map((t) => (
+                      <li key={t} className="tag">{t}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+            <ol key="timeline" className="enter relative ml-3 border-l-2 border-border lg:hidden">
+              {experiencias.map((exp, i) => {
+                const open = aberto === i;
+                return (
+                  <li key={exp.periodo} className="relative pb-10 pl-8 last:pb-0 lg:pl-12">
+                    <span
+                      aria-hidden
+                      className="absolute -left-[9px] top-1.5 h-4 w-4 rounded-full border-2 border-background transition-transform"
+                      style={{ background: open ? "var(--brand)" : "var(--muted-foreground)", transform: open ? "scale(1.25)" : undefined }}
+                    />
+                    <p className="mb-1 text-xs uppercase tracking-wider text-[var(--brand-ink)] lg:absolute lg:right-[calc(100%+3rem)] lg:top-1.5 lg:mb-0 lg:w-56 lg:text-right">
+                      {exp.periodo}
+                    </p>
+                    <button
+                      type="button"
+                      aria-expanded={open}
+                      onClick={() => setAberto(open ? -1 : i)}
+                      className="group block w-full text-left"
+                    >
+                      <h3 className="text-xl font-semibold transition-colors group-hover:text-[var(--brand-ink)]">
+                        {exp.cargo}
+                        <span className="ml-2 inline-block text-sm text-muted-foreground transition-transform" style={{ transform: open ? "rotate(180deg)" : undefined }}>▾</span>
+                      </h3>
+                      <p className="mt-1 text-sm text-muted-foreground">{exp.empresa}</p>
+                    </button>
+                    <div className="grid transition-[grid-template-rows] duration-300 motion-reduce:transition-none" style={{ gridTemplateRows: open ? "1fr" : "0fr" }}>
+                      <div className="overflow-hidden">
+                        <ul className="mt-4 space-y-2.5">
+                          {exp.topicos.map((topico) => (
+                            <li key={topico} className="flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
+                              <span className="mt-[0.5rem] h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: "var(--gradient-hero)" }} />
+                              <span>{topico.trim()}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                    <ul className="mt-4 flex flex-wrap gap-2" aria-label="Tecnologias">
+                      {exp.tags.map((t) => (
+                        <li key={t} className="tag">{t}</li>
+                      ))}
+                    </ul>
+                  </li>
+                );
+              })}
+            </ol>
+            </>
+          ) : (
+          <ol key="cards" className="enter space-y-5">
+            {experiencias.map((exp, i) => (
+              <li
+                key={exp.periodo}
+                className="card grid gap-4 p-6 md:grid-cols-[14rem_1fr] md:gap-10 md:p-8"
+              >
+                <div>
+                  <p className="text-xs uppercase tracking-wider text-[var(--brand-ink)]">
+                    {exp.periodo}
+                  </p>
+                  {i === 0 && (
+                    <span className="mt-3 inline-block rounded-full bg-[var(--brand-soft)] px-2.5 py-0.5 text-xs font-semibold">
+                      Atual
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold">{exp.cargo}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{exp.empresa}</p>
+                  <ul className="mt-4 space-y-2.5">
+                    {exp.topicos.map((topico) => (
+                      <li key={topico} className="flex items-start gap-3 text-sm leading-relaxed text-muted-foreground">
+                        <span
+                          className="mt-[0.5rem] h-1.5 w-1.5 shrink-0 rounded-full"
+                          style={{ background: "var(--gradient-hero)" }}
+                        />
+                        <span>{topico.trim()}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <ul className="mt-5 flex flex-wrap gap-2" aria-label="Tecnologias">
+                    {exp.tags.map((t) => (
+                      <li key={t} className="tag">{t}</li>
+                    ))}
+                  </ul>
+                </div>
               </li>
             ))}
           </ol>
+          )}
+        </div>
+      </section>
+
+      <section id="contato" className="px-6 py-28">
+        <div className="mx-auto w-full max-w-6xl">
+          <p className="mb-3 text-sm text-[var(--brand-ink)]">03 / contato</p>
+          <h2 className="max-w-3xl text-4xl font-bold leading-tight tracking-tight md:text-6xl">
+            Entre em contato
+          </h2>
+          <div className="mt-10 flex flex-wrap gap-3">
+            <a
+              href="https://www.linkedin.com/in/enzo-yukio-chinen/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-solid"
+            >
+              <FaLinkedin className="h-4 w-4" /> Falar no LinkedIn
+              <FaArrowRight className="h-3 w-3" />
+            </a>
+            <a
+              href="https://github.com/YukioChinen"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-ghost"
+            >
+              <FaGithub className="h-4 w-4" /> Ver GitHub
+            </a>
+          </div>
         </div>
       </section>
 

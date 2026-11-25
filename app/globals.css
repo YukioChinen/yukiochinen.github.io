@@ -33,9 +33,12 @@
 
 :root {
   --radius: 0.75rem;
-  --background: oklch(0.98 0.01 90);
+  --background: oklch(0.985 0.008 90);
   --foreground: oklch(0.18 0.02 250);
-  --gradient-hero: linear-gradient(135deg, oklch(0.88 0.18 100), oklch(0.78 0.19 80));
+  --brand: oklch(0.72 0.17 75);
+  --brand-ink: oklch(0.5 0.12 70);
+  --brand-soft: oklch(0.95 0.06 92);
+  --gradient-hero: linear-gradient(135deg, oklch(0.86 0.17 95), oklch(0.72 0.18 65));
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.129 0.042 264.695);
   --popover: oklch(1 0 0);
@@ -50,13 +53,17 @@
   --accent-foreground: oklch(0.208 0.042 265.755);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
+  --border: oklch(0.9 0.015 90);
   --input: oklch(0.929 0.013 255.508);
   --ring: oklch(0.704 0.04 256.788);
 }
 
 .dark {
-  --background: oklch(0.129 0.042 264.695);
+  --brand: oklch(0.82 0.16 85);
+  --brand-ink: oklch(0.85 0.14 88);
+  --brand-soft: oklch(0.28 0.05 85);
+  --gradient-hero: linear-gradient(135deg, oklch(0.88 0.17 98), oklch(0.76 0.17 70));
+  --background: oklch(0.16 0.02 255);
   --foreground: oklch(0.984 0.003 247.858);
   --card: oklch(0.208 0.042 265.755);
   --card-foreground: oklch(0.984 0.003 247.858);
@@ -72,7 +79,7 @@
   --accent-foreground: oklch(0.984 0.003 247.858);
   --destructive: oklch(0.704 0.191 22.216);
   --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(1 0 0 / 10%);
+  --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.551 0.027 264.364);
 }
@@ -84,6 +91,17 @@
 
   * {
     border-color: var(--color-border);
+  }
+
+  ::selection {
+    background: var(--brand);
+    color: oklch(0.2 0.02 80);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 3px;
+    border-radius: 6px;
   }
 
   body {
@@ -109,4 +127,76 @@
   .animate-caret-blink {
     animation: caret-blink 1.0s steps(1, end) infinite;
   }
+}
+
+@layer components {
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, var(--border) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 70% 60% at 70% 30%, #000 0%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 70% 30%, #000 0%, transparent 75%);
+    opacity: 0.7;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0 1.4rem;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:active { transform: translateY(0) scale(0.98); }
+  .btn-solid { background: var(--brand); color: oklch(0.2 0.02 80); }
+  .btn-solid:hover { box-shadow: 0 8px 24px -8px var(--brand); }
+  .btn-ghost { border: 1px solid var(--border); }
+  .btn-ghost:hover { background: var(--accent); }
+
+  .link-draw {
+    background: linear-gradient(var(--brand), var(--brand)) 0 100% / 0 2px no-repeat;
+    transition: background-size 0.3s;
+  }
+  .link-draw:hover, .link-draw[data-active="true"] { background-size: 100% 2px; }
+
+  .card {
+    border: 1px solid var(--border);
+    background: var(--card);
+    border-radius: 1rem;
+    transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in oklch, var(--brand) 60%, var(--border));
+    box-shadow: 0 12px 32px -16px color-mix(in oklch, var(--brand) 50%, transparent);
+  }
+
+  .photo-frame img { transition: transform 0.6s; }
+  .photo-frame:hover img { transform: scale(1.03); }
+
+  .tag {
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.15rem 0.7rem;
+    font-size: 0.72rem;
+    color: var(--muted-foreground);
+  }
+
+  .enter { animation: enter 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  @keyframes enter {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .enter, .animate-caret-blink { animation: none; }
+  .btn, .card, .photo-frame img { transition: none; }
+  .btn:hover, .card:hover, .photo-frame:hover img { transform: none; }
 }
